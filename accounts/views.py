@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from accounts.models import User
@@ -8,12 +9,7 @@ from django.shortcuts import render, redirect
 
 from accounts.form import UserForm, SearchUserForm, LoginForm
 from chat.models import Room
-
-
-def accounts(request):
-    return render(request, 'accounts_login.html')
-
-
+#
 def login(request: HttpRequest):
     if request.method == 'POST':
         username = request.POST['username']
@@ -23,12 +19,12 @@ def login(request: HttpRequest):
             auth_login(request, user)
             user.is_active = 1
             user.save()
-            messages.success(request, f"돌아오셨군요ㅠㅠ {user.nickname}님..")
+            messages.info(request, f"돌아오셨네요 {user.nickname}님!!")
             return redirect('chat:list')
         else:
-            messages.warning(request, "잘못된 아이디/비밀번호 입니다.")
+            messages.error(request, "잘못된 아이디/비밀번호 입니다.")
             return redirect('accounts:login')
-    return render(request, 'accounts_login.html')
+    return render(request, 'main/main.html')
 
 
 def signup(request: HttpRequest):
@@ -39,19 +35,23 @@ def signup(request: HttpRequest):
             auth_login(request, signed_user)
             signed_user.is_active = 1
             signed_user.save()
-            messages.success(request, "회원가입 환영합니다.")
+            messages.success(request, f"환영합니다 <{signed_user.nickname}>님!")
             return redirect('chat:list')
+        else :
+            messages.error(request, "회원가입 중 오류가 발생했습니다.")
+            return render(request, 'main/main.html')
     else:
         form = UserForm()
-    return render(request, 'signup.html', {
-        'form': form,
-    })
+        signup = "signup"
+        context = {'form': form, 'signup': signup}
+        return render(request, 'main/main.html', context)
 
 
 def logout(request):
     request.user.is_active = 0
     request.user.save()
     auth_logout(request)
+    messages.warning(request, "로그아웃 되었습니다.")
     return redirect('/')
 
 
@@ -61,15 +61,13 @@ def add_friend(request, user_id):
     if user != request.user:
         request.user.friends.add(user)
     else:
-        messages.warning(request, '자기 자신은 친구 추가 하지 않아도 영원한 친구입니다.')
+        messages.error(request, '자기 자신은 친구 추가 하지 않아도 영원한 친구입니다.')
     return redirect('accounts:user_list')
 
 
 
 def user_list(request):
-    users = User.objects.all()
-    context = {'users': users}
-    return render(request, 'user_list.html', context)
+    return render(request, 'friend_list.html')
 
 
 
@@ -87,12 +85,12 @@ def user_list_online(request):
 
 
 def add_friend_searchpage(request):
-    return render(request, 'add_friend_search.html')
+    return render(request, 'friend_search.html')
 
 
 def searching_user(request):
     kw = request.GET.get('kw')
     find_friend = User.objects.filter(nickname__icontains=kw) | User.objects.filter(nickname__startswith=kw)
 
-    return render(request, 'add_friend_search.html', {'find_friend': find_friend})
+    return render(request, 'friend_search.html', {'find_friend': find_friend})
 

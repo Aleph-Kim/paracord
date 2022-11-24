@@ -1,0 +1,71 @@
+{% load tags %}
+<div class="bg-gray-800 w-56 flex-none flex flex-col justify-between">
+    <div class="text-sm overflow-y-auto">
+        <button
+            class="flex items-center text-gray-500 hover:text-gray-200 py-3"
+        >
+            <i class="fas fa-caret-down uppercase tracking-wide">
+                다이렉트 메세지</i
+            >
+        </button>
+        <div>
+            {% if user.nickname %} {% for room in user.part_server.all %} {% if room.room_type == "direct" %}
+            <ul class="nav-item w-100 bg-gray-800">
+                <a
+                    href="{% url 'chat:detail' room.id %}"
+                    class="nav-link py-2 margin"
+                    title=""
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    data-bs-original-title="Customers"
+                >
+                    <button
+                        type="button"
+                        class="flex items-center overflow-hidden h-10 mb-1 w-52 ml-2 mt-1 mr-10 bg-gray-800 hover:bg-gray-700 rounded text-gray-300"
+                    >
+                        <i class="fa-solid fa-user ml-4 mr-2"></i>
+                        {{room.name|namefilter:user.nickname}}
+                    </button>
+                </a>
+            </ul>
+            {% endif %} {% endfor %} {% endif %}
+        </div>
+    </div>
+    <div class="bg-gray-900 py-4 px-2 flex items-center justify-between">
+        {% if user.nickname %}
+        <div class="flex items-center">
+            <a href="#">
+                <i class="fas fa-user-circle fa-2x text-white"></i>
+            </a>
+            <div class="text-xs ml-2">
+                <div class="text-white">{{user.nickname}}</div>
+            </div>
+        </div>
+        <div class="flex items-center text-gray-500">
+            <a
+                href="{% url 'accounts:logout' %}"
+                data-bs-toggle="tooltip"
+                class="ml-2 text-xs text-gray-300"
+            >
+                로그아웃
+                <i
+                    class="fa-solid fa-right-from-bracket mx-[2px] text-white"
+                ></i>
+            </a>
+        </div>
+        {% else %}
+        <div class="flex items-center">
+            <div class="text-[0.9em] ml-2">
+                <a
+                    href="{% url 'accounts:login' %}"
+                    data-bs-toggle="tooltip"
+                    class="ml-2 text-gray-300"
+                >
+                    <i class="fa-solid fa-user mx-[2px] text-white"></i>
+                    <span> 로그인 </span>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
