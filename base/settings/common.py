@@ -84,9 +84,9 @@ pymysql.install_as_MySQLdb()
 ACADEMY = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'paracord_dev',
-        'USER': 'taeate',
-        'PASSWORD': 'tjdwls1451',
+        'NAME': 'paracord',
+        'USER': 'kimchi',
+        'PASSWORD': 'Dktjdej12!!',
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTIONS': {
@@ -97,9 +97,9 @@ ACADEMY = {
 HOME = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'chickenstalk',
+        'NAME': 'paracord_dev',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': '1r4q2e3w',
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTIONS': {
@@ -107,7 +107,7 @@ HOME = {
         },
     }
 }
-DATABASES = ACADEMY
+DATABASES = HOME
 # DB = {
 #     "HOME":HOME,
 #     "ACADEMY":ACADEMY
@@ -165,7 +165,7 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / 'static'
 
-CSRF_TRUSTED_ORIGINS = ['https://paracord.public.ahncod.co.kr']
+CSRF_TRUSTED_ORIGINS = ['https://paracord.kchm.kr']
 
 GRAPH_MODELS = {
   'all_applications': True,

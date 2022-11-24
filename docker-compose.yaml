@@ -2,11 +2,11 @@ version: '3'
 services:
   django:
     build : .
-    command : bash -c "gunicorn --reload --bind :8022 base.wsgi:application"
+    command : bash -c "gunicorn --reload --bind :8000 base.wsgi:application"
     #command : bash
     # command : tail -f /dev/null
     container_name: python__2
-    hostname: root
+    hostname: kimchi
     ports:
-      - 8022:8022
+      - 8000:8000
     # volumes:
